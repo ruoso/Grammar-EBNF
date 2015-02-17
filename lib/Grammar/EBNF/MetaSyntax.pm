@@ -47,7 +47,7 @@ grammar Grammar::EBNF::MetaSyntax {
         \'
     }
     token repetition_symbol {
-        [ \* | \+ ]
+        \*
     }
     token second_quote_symbol {
         \"
@@ -214,8 +214,6 @@ grammar Grammar::EBNF::MetaSyntax {
     }
     rule TOP {
         ^ [ <syntax_rule>
-            |<syntax_comment>
-            |<syntax_symbol>
             ]+ $
     }
 }

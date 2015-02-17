@@ -1,7 +1,7 @@
 use Test;
 use Grammar::EBNF::MetaSyntax;
 
-my $m = Grammar::EBNF::MetaSyntax.parsefile("t/003_ansi_c.bnf")
+my $m = Grammar::EBNF::MetaSyntax.parsefile("t/003_ansi_c.ebnf")
   or die "Basic match failed, aborting all other tests";
 
 print $m.gist();

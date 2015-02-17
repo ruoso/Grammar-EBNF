@@ -24,5 +24,5 @@ letterA = "a";
 numberZero = "0";
 letterA = "a";
 ', 'two rules in TOP with newlines');
-is($g.parse('ExternalDeclaration+', :rule<definitions_list>), 'ExternalDeclaration+', 'quantifier');
+is($g.parse('{ ExternalDeclaration }', :rule<definitions_list>), '{ ExternalDeclaration }', 'repetition');
 done()
