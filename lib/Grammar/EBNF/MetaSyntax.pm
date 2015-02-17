@@ -213,7 +213,7 @@ grammar Grammar::EBNF::MetaSyntax {
         ""
     }
     rule TOP {
-        ^ [ <syntax_rule>
-            ]+ $
+        [ <syntax_rule>
+        ]+
     }
 }
