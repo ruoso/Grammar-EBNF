@@ -12,6 +12,7 @@ sub EXPORT(|) {
         }
         method statement_control:sym<ebnf-grammar>(Mu $/ is rw) {
             my $package = lk($/,"longname").Str;
+            #$/.'!make'($package);
         }
     }
     nqp::bindkey(%*LANG, 'MAIN', %*LANG<MAIN>.HOW.mixin(%*LANG<MAIN>, Grammar::EBNF::Slang));
