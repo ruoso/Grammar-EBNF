@@ -32,10 +32,10 @@ grammar Grammar::EBNF::MetaSyntax {
         \)
     }
     token end_option_symbol {
-        (\]|\/\))
+        [\]|\/\)]
     }
     token end_repeat_symbol {
-        (\}|\:\))
+        [\}|\:\)]
     }
     token except_symbol {
         \-
@@ -68,10 +68,10 @@ grammar Grammar::EBNF::MetaSyntax {
         \(
     }
     token start_option_symbol {
-        (\[|\(\/)
+        [\[|\(\/]
     }
     token start_repeat_symbol {
-        (\{|\(\:)
+        [\{|\(\:]
     }
     token terminator_symbol {
         <[;.]>
@@ -95,7 +95,7 @@ grammar Grammar::EBNF::MetaSyntax {
         \f
     }
     token terminal_character {
-        ( <letter>|
+        [ <letter>|
           <decimal_digit>|
           <concatenate_symbol>|
           <defining_symbol>|
@@ -114,15 +114,15 @@ grammar Grammar::EBNF::MetaSyntax {
           <start_option_symbol>|
           <start_repeat_symbol>|
           <terminator_symbol>|
-          <other_character> )
+          <other_character> ]
     }
     token gap_free_symbol {
-        ( <terminal_character>|
-          <terminal_string> )
+        [ <terminal_character>|
+          <terminal_string> ]
     }
     token terminal_string {
-        ( ( <first_quote_symbol> <first_terminal_character>+ <first_quote_symbol> )|
-          ( <second_quote_symbol> <second_terminal_character>+ <second_quote_symbol> ))
+        [ [ <first_quote_symbol> <first_terminal_character>+ <first_quote_symbol> ]|
+          [ <second_quote_symbol> <second_terminal_character>+ <second_quote_symbol> ]]
     }
     token first_terminal_character {
         <terminal_character>
@@ -131,24 +131,24 @@ grammar Grammar::EBNF::MetaSyntax {
         <terminal_character>
     }
     token gap_separator {
-        ( <space_character>|
+        [ <space_character>|
           <horizontal_tabulation_character>|
           <new_line>|
           <vertical_tabulation_character>|
-          <form_feed> )
+          <form_feed> ]
     }
     token syntax_symbol {
-        <gap_separator>* (<gap_free_symbol> <gap_separator>*)+
+        <gap_separator>* [ <gap_free_symbol> <gap_separator>* ]+
     }
     token syntax_comment {
-        <bracketed_textual_comment>* <commentless_symbol> <bracketed_textual_comment>* (<commentless_symbol> <bracketed_textual_comment>*)*
+        <bracketed_textual_comment>* <commentless_symbol> <bracketed_textual_comment>* [ <commentless_symbol> <bracketed_textual_comment>* ]*
     }
     token commentless_symbol {
-        ( <terminal_character>|
+        [ <terminal_character>|
           <meta_identifier>|
           <integer>|
           <terminal_string>|
-          <special_sequence> )
+          <special_sequence> ]
     }
     token integer {
         <decimal_digit>+
@@ -157,7 +157,7 @@ grammar Grammar::EBNF::MetaSyntax {
         <letter> <meta_identifier_character>*
     }
     token meta_identifier_character {
-        (<letter>|<decimal_digit>)
+        [<letter>|<decimal_digit>]
     }
     token special_sequence {
         <special_sequence_symbol> <special_sequence_character>* <special_sequence_symbol>
@@ -166,9 +166,9 @@ grammar Grammar::EBNF::MetaSyntax {
         <terminal_character>
     }
     token comment_symbol {
-        ( <bracketed_textual_comment>|
+        [ <bracketed_textual_comment>|
           <other_character>|
-          <commentless_symbol> )
+          <commentless_symbol> ]
     }
     token bracketed_textual_comment {
         <start_comment_symbol> <comment_symbol>* <end_comment_symbol>
@@ -177,28 +177,28 @@ grammar Grammar::EBNF::MetaSyntax {
         <meta_identifier> <defining_symbol> <definitions_list> <terminator_symbol>
     }
     rule definitions_list {
-        <single_definition> (<definition_separator_symbol> <single_definition>)*
+        <single_definition> [ <definition_separator_symbol> <single_definition> ]*
     }
     rule single_definition {
-        <syntactic_term> (<concatenate_symbol> <syntactic_term>)*
+        <syntactic_term> [ <concatenate_symbol> <syntactic_term> ]*
     }
     rule syntactic_term {
-        <syntactic_factor> (<except_symbol> <syntactic_exception>)?
+        <syntactic_factor> [ <except_symbol> <syntactic_exception> ]?
     }
     rule syntactic_exception {
         <syntactic_factor>
     }
     rule syntactic_factor {
-        (<integer> <repetition_symbol>)? <syntactic_primary>
+        [ <integer> <repetition_symbol> ]? <syntactic_primary>
     }
     rule syntactic_primary {
-        ( <optional_sequence>|
+        [ <optional_sequence>|
           <repeated_sequence>|
           <grouped_sequence>|
           <meta_identifier>|
           <terminal_string>|
           <special_sequence>|
-          <empty_sequence> )
+          <empty_sequence> ]
     }
     rule optional_sequence {
         <start_option_symbol> <definitions_list> <end_option_symbol>
@@ -212,8 +212,11 @@ grammar Grammar::EBNF::MetaSyntax {
     rule empty_sequence {
         ""
     }
-    rule TOP {
+    rule main_syntax { 
         [ <syntax_rule>
         ]+
+    }
+    rule TOP {
+        ^ <main_syntax> $
     }
 }
