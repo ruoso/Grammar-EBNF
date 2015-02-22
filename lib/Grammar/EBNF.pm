@@ -14,7 +14,7 @@ sub EXPORT(|) {
         method statement_control:sym<ebnf-grammar>(Mu $/ is rw) {
             my $package = lk($/,"longname").Str;
             my $ebnf = lk($/,"EBNF").made();
-            $/.'make'(QAST::CompUnit.new(:hll('grammar-ebnf'), $ebnf));
+            $/.'make'(QAST::IVal.new(:value(42)));
         }
     }
     nqp::bindkey(%*LANG, 'MAIN', %*LANG<MAIN>.HOW.mixin(%*LANG<MAIN>, Grammar::EBNF::Slang));
