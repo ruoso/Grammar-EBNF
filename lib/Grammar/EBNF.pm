@@ -1,9 +1,10 @@
 use Grammar::EBNF::MetaSyntax;
 use Grammar::EBNF::Actions;
+use QAST:from<NQP>;
 sub EXPORT(|) {
     role Grammar::EBNF::Slang {
         rule statement_control:sym<ebnf-grammar> {
-            <sym> <longname> \{ <EBNF=.FOREIGN_LANG: 'Grammar::EBNF::MetaSyntax', 'main_syntax'> \} 
+            <sym> <longname> \{ <EBNF=.FOREIGN_LANG('Grammar::EBNF::MetaSyntax', 'main_syntax')> \} 
         }
     }
     role Grammar::EBNF::Slang::Actions {
@@ -12,7 +13,8 @@ sub EXPORT(|) {
         }
         method statement_control:sym<ebnf-grammar>(Mu $/ is rw) {
             my $package = lk($/,"longname").Str;
-            #$/.'!make'($package);
+            my $ebnf = lk($/,"EBNF").made();
+            $/.'make'(QAST::CompUnit.new(:hll('grammar-ebnf'), $ebnf));
         }
     }
     nqp::bindkey(%*LANG, 'MAIN', %*LANG<MAIN>.HOW.mixin(%*LANG<MAIN>, Grammar::EBNF::Slang));
