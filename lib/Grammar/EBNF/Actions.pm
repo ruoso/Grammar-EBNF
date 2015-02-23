@@ -5,10 +5,15 @@ class Grammar::EBNF::Actions {
     for map *.made, @($/<syntax_rule>) -> $d {
       my $name = $d<rule_name>;
       my $regex = $d<regex>;
-      if (%rules{$name}) {
-        !!! "Implicit alternatives not supported yet";
+      %rules{$name} ||= [];
+      %rules{$name}.push($regex);
+    };
+    for %rules.keys -> $name {
+      my @a = @(%rules{$name});
+      if (@a.elems == 1) {
+        %rules{$name} = @a[0];
       } else {
-        %rules{$name} = $regex;
+        %rules{$name} = /|@a/;
       }
     };
     $/.make(%rules);
