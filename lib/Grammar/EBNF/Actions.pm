@@ -11,17 +11,13 @@ class Grammar::EBNF::Actions {
         %rules{$name} = $regex;
       }
     };
-    my @ops;
-    for %rules.keys -> $m {
-        ??? "What should we do with $m here?"
-    };
-    $/.make(QAST::Block.new(|@ops));
+    $/.make(%rules);
   }
   method syntax_rule(Mu $/ is rw) {
-    my @d = map *.made, $/<definitions_list>;
+    my $d = $/<definitions_list>.made;
     my $s =
       { rule_name => $/<meta_identifier>.made,
-        regex => @d,
+        regex => $d,
       };
     $/.make($s);
   }
@@ -55,7 +51,7 @@ class Grammar::EBNF::Actions {
   }
   method syntactic_primary(Mu $/ is rw) {
     if ($<terminal_string>) {
-      return $<terminal_string>.made;
+      $/.make($<terminal_string>.made);
     } else {
       !!! "Only terminal_string implemented so far";
     }
@@ -64,11 +60,12 @@ class Grammar::EBNF::Actions {
     $/.make($/.Str);
   }
   method terminal_string(Mu $/ is rw) {
+    my $str;
     if ($<second_quote_symbol>) {
-      my $str = join "", map *.Str, @($<second_terminal_character>);
-      $/.make(QAST::Regex.new( $str, :rxtype<literal>, :node($/) ));
+      $str = join "", map *.Str, @($<second_terminal_character>);
     } else {
-      !!! "Single quote not implemented yet";
+      $str = join "", map *.Str, @($<first_terminal_character>);
     }
+    $/.make(/$str/);
   }
 }
