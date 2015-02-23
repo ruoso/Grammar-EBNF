@@ -33,7 +33,7 @@ sub EXPORT(|) {
             my $*PACKAGE := $*W.pkg_create_mo($/, $*W.resolve_mo($/, 'grammar'), |%args);
             $*W.install_package($/, @name, 'our', 'ebnf-grammar', $target_package, $outer, $*PACKAGE);
             for $ebnf.keys -> $d {
-                $*PACKAGE.^add_method($d, $ebnf{$d});
+                $*W.pkg_add_method($/, $*PACKAGE, 'add_method', $d, |$ebnf{$d});
             }
             $*W.pkg_compose($*PACKAGE);
             $/.'make'(QAST::IVal.new(:value(1)));
