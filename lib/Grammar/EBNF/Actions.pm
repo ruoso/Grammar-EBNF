@@ -58,7 +58,11 @@ class Grammar::EBNF::Actions {
     if ($<terminal_string>) {
       $/.make($<terminal_string>.made);
     } elsif ($<meta_identifier>) {
-      !!! 'Subrules blocked on https://rt.perl.org/Public/Bug/Display.html?id=117397';
+      my $name = $<meta_identifier>.made;
+      my $faux_regex = -> $invocant: *@args {
+        $invocant."$name"(|@args);
+      };
+      $/.make(/$<$name>=$faux_regex/);
     } else {
       !!! "Only terminal_string implemented so far";
     }
