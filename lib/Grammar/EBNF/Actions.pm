@@ -73,6 +73,9 @@ class Grammar::EBNF::Actions {
     } elsif ($<repeated_sequence>) {
       my $regex = $<repeated_sequence><definitions_list>.made;
       $/.make(/$regex*/);
+    } elsif ($<grouped_sequence>) {
+      my $regex = $<grouped_sequence><definitions_list>.made;
+      $/.make(/$<r>=($regex)/);
     } else {
       !!! "Only terminal_string implemented so far";
     }
