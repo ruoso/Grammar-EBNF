@@ -62,7 +62,7 @@ class Grammar::EBNF::Actions {
       my $faux_regex = -> $invocant: *@args {
         $invocant."$name"(|@args);
       };
-      $/.make(/$<$name>=$faux_regex/);
+      $/.make(EVAL '/$<'~$name~'>=$faux_regex/');
     } else {
       !!! "Only terminal_string implemented so far";
     }
