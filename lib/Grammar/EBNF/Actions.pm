@@ -71,7 +71,8 @@ class Grammar::EBNF::Actions {
       };
       $/.make(EVAL '/$<'~$name~'>=$faux_regex/');
     } elsif ($<repeated_sequence>) {
-      !!! "Repeated sequenc nyi"; 
+      my $regex = $<repeated_sequence><definitions_list>.made;
+      $/.make(/$regex*/);
     } else {
       !!! "Only terminal_string implemented so far";
     }
