@@ -75,9 +75,12 @@ class Grammar::EBNF::Actions {
       $/.make(/$regex*/);
     } elsif ($<grouped_sequence>) {
       my $regex = $<grouped_sequence><definitions_list>.made;
-      $/.make(/$<r>=($regex)/);
+      $/.make(/($regex)/);
+    } elsif ($<empty_sequence>) {
+      $/.make('');
     } else {
-      !!! "Only terminal_string implemented so far";
+      my @a = keys $/;
+      !!! @a ~ " NYI!";
     }
   }
   method meta_identifier(Mu $/ is rw) {
