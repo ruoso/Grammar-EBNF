@@ -1,6 +1,3 @@
-# This test is failing because of
-# https://rt.perl.org/Public/Bug/Display.html?id=117397
-
 use Test;
 use Grammar::EBNF;
 ebnf-grammar A::B {
