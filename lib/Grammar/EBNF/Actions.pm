@@ -38,7 +38,6 @@ class Grammar::EBNF::Actions {
       my @regexes = $<syntactic_term>>>.made;
       my $regexstr = '/';
       for 0..(@regexes.elems-1) -> $i {
-        warn "i=$i; "~@regexes[$i].perl;
         $regexstr ~= '$(@regexes['~$i~'])'
       } 
       $regexstr ~= '/';
@@ -71,6 +70,8 @@ class Grammar::EBNF::Actions {
         $invocant."$name"(|@args);
       };
       $/.make(EVAL '/$<'~$name~'>=$faux_regex/');
+    } elsif ($<repeated_sequence>) {
+      !!! "Repeated sequenc nyi"; 
     } else {
       !!! "Only terminal_string implemented so far";
     }
