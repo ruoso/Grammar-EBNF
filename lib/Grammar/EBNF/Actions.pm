@@ -35,7 +35,15 @@ class Grammar::EBNF::Actions {
   }
   method single_definition(Mu $/ is rw) {
     if ($/<syntactic_term>.elems > 1) {
-      !!! "No concatenations yet";
+      my @regexes = $<syntactic_term>>>.made;
+      my $regexstr = '/';
+      for 0..(@regexes.elems-1) -> $i {
+        warn "i=$i; "~@regexes[$i].perl;
+        $regexstr ~= '$(@regexes['~$i~'])'
+      } 
+      $regexstr ~= '/';
+      my $regex = EVAL $regexstr;
+      $/.make($regex);
     } else {
       $/.make($<syntactic_term>[0].made);
     }
