@@ -13,7 +13,7 @@ class Grammar::EBNF::Actions {
       if (@a.elems == 1) {
         %rules{$name} = @a[0];
       } else {
-        %rules{$name} = /|@a/;
+        %rules{$name} = '['~(@a.join('|'))~']';
       }
     };
     $/.make(%rules);
@@ -36,13 +36,7 @@ class Grammar::EBNF::Actions {
   method single_definition(Mu $/ is rw) {
     if ($/<syntactic_term>.elems > 1) {
       my @regexes = $<syntactic_term>>>.made;
-      my $regexstr = '/';
-      for 0..(@regexes.elems-1) -> $i {
-        $regexstr ~= '$(@regexes['~$i~'])'
-      } 
-      $regexstr ~= '/';
-      my $regex = EVAL $regexstr;
-      $/.make($regex);
+      $/.make(@regexes.join(''));
     } else {
       $/.make($<syntactic_term>[0].made);
     }
@@ -69,13 +63,13 @@ class Grammar::EBNF::Actions {
       my $faux_regex = -> $invocant: *@args {
         $invocant."$name"(|@args);
       };
-      $/.make(EVAL '/$<'~$name~'>=$faux_regex/');
+      $/.make('<'~$name~'>');
     } elsif ($<repeated_sequence>) {
       my $regex = $<repeated_sequence><definitions_list>.made;
-      $/.make(/$regex*/);
+      $/.make("[$regex]*");
     } elsif ($<grouped_sequence>) {
       my $regex = $<grouped_sequence><definitions_list>.made;
-      $/.make(/($regex)/);
+      $/.make("($regex)");
     } elsif ($<empty_sequence>) {
       $/.make('');
     } else {
@@ -93,6 +87,6 @@ class Grammar::EBNF::Actions {
     } else {
       $str = join "", map *.Str, @($<first_terminal_character>);
     }
-    $/.make(/$str/);
+    $/.make("\"$str\"");
   }
 }
