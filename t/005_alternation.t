@@ -8,4 +8,4 @@ ok(A::B.parse("42"), "Parse succeeds");
 ok(A::B.parse("2"), "Parse succeeds");
 ok(!A::B.parse("3"), "Parse fails when it doesn't match");
 ok(!A::B.parse("43"), "Parse fails when it doesn't match");
-done();
+done-testing;

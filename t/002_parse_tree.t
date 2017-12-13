@@ -16,4 +16,4 @@ is($m{"main_syntax"}{"syntax_rule"}[1]{"definitions_list"}, '"a"', "second defin
 is($m{"main_syntax"}{"syntax_rule"}[0]{"definitions_list"}{"single_definition"}, '"0"', "first single definition");
 is($m{"main_syntax"}{"syntax_rule"}[1]{"definitions_list"}{"single_definition"}, '"a"', "second single definition");
 
-done()
+done-testing;

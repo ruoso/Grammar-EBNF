@@ -6,4 +6,4 @@ ebnf-grammar A::B {
 ok(!A::B.parse("32"), "Parse fails when it doesn't match");
 ok(A::B.parse("23"), "Parse succeeds when it matches");
 
-done();
+done-testing;
