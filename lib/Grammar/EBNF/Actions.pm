@@ -1,4 +1,5 @@
 use QAST:from<NQP>;
+
 class Grammar::EBNF::Actions {
   method main_syntax(Mu $/ is rw) {
     my %rules;
@@ -60,7 +61,7 @@ class Grammar::EBNF::Actions {
       $/.make($<terminal_string>.made);
     } elsif ($<meta_identifier>) {
       my $name = $<meta_identifier>.made;
-      my $faux_regex = -> $invocant: *@args {
+      my $faux_regex = -> $invocant, *@args {
         $invocant."$name"(|@args);
       };
       $/.make('<'~$name~'>');

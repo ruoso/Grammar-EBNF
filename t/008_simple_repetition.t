@@ -11,4 +11,4 @@ ok(A::B.parse("2333"), "Matches with 3 occurrences");
 ok(A::B.parse("23333"), "Matches with 4 occurrences");
 ok(!A::B.parse("23334"), "Fails when wrong character after 3 occurrences");
 
-done();
+done-testing;
