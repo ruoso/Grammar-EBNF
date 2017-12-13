@@ -1,6 +1,9 @@
 use Grammar::EBNF::MetaSyntax;
 use Grammar::EBNF::Actions;
 use QAST:from<NQP>;
+use nqp;
+use MONKEY-SEE-NO-EVAL;
+
 sub EXPORT(|) {
     my sub lk(Mu \h, \k) {
         nqp::atkey(nqp::findmethod(h, 'hash')(h), k)
